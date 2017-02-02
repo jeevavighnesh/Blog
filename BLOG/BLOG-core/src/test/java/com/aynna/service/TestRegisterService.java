@@ -6,7 +6,7 @@ public class TestRegisterService {
 	public static void main(String[] args) throws ServiceException {
 
 		RegisterService regserv = new RegisterService();
-		regserv.registerService("kola", "hai@g.com", "");
+		regserv.registerService("kimberk", "komberk@g.com", "kilakill");
 
 	}
 

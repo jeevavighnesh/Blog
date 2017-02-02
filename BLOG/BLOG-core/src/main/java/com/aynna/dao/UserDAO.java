@@ -18,7 +18,7 @@ public class UserDAO {
 	public void save(User user) {
 
 		String sql = "INSERT INTO USERS (NAME, EMAIL_ID, PASSWORD) values(?,?,?)";
-		Object[] params = { user.getEmailId(), user.getEmailId(), user.getPassword() };
+		Object[] params = { user.getName(), user.getEmailId(), user.getPassword() };
 		int rows = jdbcTemplate.update(sql, params);
 		LOGGER.setLevel(Level.INFO);
 		LOGGER.info("No of rows INSERTED: " + rows);
