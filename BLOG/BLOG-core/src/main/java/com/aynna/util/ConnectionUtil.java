@@ -9,9 +9,9 @@ public class ConnectionUtil {
 	public static DataSource getDataSource() {
 		BasicDataSource ds = new BasicDataSource();
 		ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
-		ds.setUsername("root");
-		ds.setPassword("quarter#9112");
-		ds.setUrl("jdbc:mysql://localhost:3306/BLOG");
+		ds.setUsername("dev_user");
+		ds.setPassword("dev_pwd");
+		ds.setUrl("jdbc:mysql://139.59.29.57:3306/vighnesh_db");
 		return ds;
 	}
 
