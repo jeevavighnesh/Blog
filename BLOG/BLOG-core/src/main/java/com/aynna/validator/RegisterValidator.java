@@ -8,10 +8,10 @@ public class RegisterValidator {
 	public void registerValidator(User user) throws ValidatorException{
 		
 		GeneralValidations genvalid = new GeneralValidations();
+		genvalid.isValidField(user.getName(),"Name");
 		genvalid.isValidField(user.getEmailId());
-		genvalid.isValidField(user.getName());
-		genvalid.isValidField(user.getPassword());
 		genvalid.isAlreadyRegistered(user.getEmailId());
+		genvalid.isValidField(user.getPassword(),"Password");
 	}
 	
 }
