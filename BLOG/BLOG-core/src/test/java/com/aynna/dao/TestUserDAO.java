@@ -1,4 +1,4 @@
-package com.aynna.test;
+package com.aynna.dao;
 
 import com.aynna.dao.UserDAO;
 
