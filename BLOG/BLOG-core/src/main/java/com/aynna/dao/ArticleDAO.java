@@ -19,9 +19,9 @@ public class ArticleDAO {
 	
 	public void save(Article object) {
 		
-		object.setUpdatedTime(LocalDateTime.now());
-		String sql = "INSERT INTO ARTICLE (USER_ID, TITLE, CONTENT, UPDATED_DATE) VALUES (?,?,?,?)";
-		Object[] params = { object.getUser().getId(), object.getTitle(), object.getContent(), object.getUpdatedTime() };
+		object.setUpdatedTimestamp(LocalDateTime.now());
+		String sql = "INSERT INTO ARTICLES (USER_ID, TITLE, CONTENT, CREATION_DATE) VALUES (?,?,?,?)";
+		Object[] params = { object.getUser().getId(), object.getTitle(), object.getContent(), LocalDateTime.now()};
 		int rows = jdbcTemplate.update(sql, params);
 		LOGGER.setLevel(Level.INFO);
 		LOGGER.info("No of rows INSERTED: " + rows);
@@ -30,7 +30,7 @@ public class ArticleDAO {
 	
 	public void updateTitle(Article object) {
 		
-		String sql = "UPDATE ARTICLE SET TITLE = ? WHERE ID = ?";
+		String sql = "UPDATE ARTICLES SET TITLE = ? WHERE ID = ?";
 		Object[] params = { object.getTitle(), object.getId() };
 		int rows = jdbcTemplate.update(sql, params);
 		LOGGER.setLevel(Level.INFO);
@@ -40,7 +40,7 @@ public class ArticleDAO {
 	
 	public void updateContent(Article object) {
 		
-		String sql = "UPDATE ARTICLE SET CONTENT = ? WHERE ID = ?";
+		String sql = "UPDATE ARTICLES SET CONTENT = ? WHERE ID = ?";
 		Object[] params = { object.getContent(), object.getId() };
 		int rows = jdbcTemplate.update(sql, params);
 		LOGGER.setLevel(Level.INFO);
@@ -50,7 +50,7 @@ public class ArticleDAO {
 	
 	public void delete(int id) {
 		
-		String sql = "DELETE FROM ARTICLE WHERE ID=?";
+		String sql = "DELETE FROM ARTICLES WHERE ID=?";
 		Object[] params = { id };
 		int rows = jdbcTemplate.update(sql, params);
 		LOGGER.setLevel(Level.INFO);
@@ -60,7 +60,7 @@ public class ArticleDAO {
 	
 	public List<Article> list() {//Select All
 		
-		String sql = "SELECT , , ,  FROM TABLENAME";
+		String sql = "SELECT ID, USER_ID, TITLE, CONTENT, CREATION_DATE, UPDATED_DATE, ACTIVE  FROM ARTICLES";
 		return jdbcTemplate.query(sql, (rs, rowNum) -> {
 			return convert(rs);
 		});
@@ -74,6 +74,9 @@ public class ArticleDAO {
 		object.setId(rs.getLong("ID"));
 		object.setTitle(rs.getString("TITLE"));
 		object.setContent(rs.getString("CONTENT"));
+		object.setCreationTimestamp(rs.getTimestamp("CREATION_DATE").toLocalDateTime());
+		object.setUpdatedTimestamp(rs.getTimestamp("UPDATED_DATE").toLocalDateTime());
+		object.setActive(rs.getBoolean("ACTIVE"));
 		object.setUser(user);
 		return object;
 	}

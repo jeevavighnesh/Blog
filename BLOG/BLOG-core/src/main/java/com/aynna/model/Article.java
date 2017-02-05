@@ -11,8 +11,8 @@ public class Article {
 	User user;
 	String title;
 	String content;
-	LocalDateTime creationDate;
-	LocalDateTime updatedTime;
+	LocalDateTime creationTimestamp;
+	LocalDateTime updatedTimestamp;
 	boolean active;
 	
 }

@@ -83,13 +83,33 @@ public class UserDAO {
 		return user;
 	}
 	
+	public Boolean isEmailIdPasswordMatch(String emailId, String Password) {
+		
+		String sql = "SELECT IFNULL((SELECT TRUE FROM USERS WHERE EMAIL_ID = ? AND PASSWORD = ?),FALSE) AS RESULT";
+		Object[] params = {emailId, Password};
+		return jdbcTemplate.queryForObject(sql, params,(rs, rowNum) -> {
+			return rs.getBoolean("RESULT");
+		});
+		
+	}
+	
 	public Boolean find(String emailId) {//Select All
 
-		String sql = "SELECT IFNULL((SELECT 1 FROM USERS WHERE EMAIL_ID = ?),FALSE) AS RESULT";
+		String sql = "SELECT IFNULL((SELECT TRUE FROM USERS WHERE EMAIL_ID = ?),FALSE) AS RESULT";
 		Object[] params = { emailId };
 		return jdbcTemplate.queryForObject(sql, params,(rs, rowNum) -> {
 			return rs.getBoolean("RESULT");
 		});
 
+	}
+	
+	public long resolveEmailId(String emailId){
+		
+		String sql = "SELECT IFNULL((SELECT ID FROM USERS WHERE EMAIL_ID = ?),NULL) AS RESULT";
+		Object[] params = { emailId };
+		return jdbcTemplate.queryForObject(sql, params,(rs, rowNum) -> {
+			return rs.getLong("RESULT");
+		});
+		
 	}
 }

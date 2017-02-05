@@ -20,7 +20,7 @@ public class CategoryMapDAO {
 	public void save(CategoryMap object) {
 		
 		String sql = "INSERT INTO CATEGORY_MAP (ARTICLE_ID, CATEGORY_ID) VALUES (?,?)";
-		Object[] params = { object.getArticle().getId(), object.getCategoty().getId() };
+		Object[] params = { object.getArticle().getId(), object.getCategory().getId() };
 		int rows = jdbcTemplate.update(sql, params);
 		LOGGER.setLevel(Level.INFO);
 		LOGGER.info("No of rows INSERTED: " + rows);
@@ -30,7 +30,7 @@ public class CategoryMapDAO {
 	public void updateCategoryId(CategoryMap object) {
 		
 		String sql = "UPDATE CATEGORY_MAP SET CATEGORY_ID = ? WHERE ID = ?";
-		Object[] params = { object.getCategoty().getId(), object.getId() };
+		Object[] params = { object.getCategory().getId(), object.getId() };
 		int rows = jdbcTemplate.update(sql, params);
 		LOGGER.setLevel(Level.INFO);
 		LOGGER.info("No of rows UPDATED: " + rows);
@@ -75,7 +75,7 @@ public class CategoryMapDAO {
 		
 		object.setId(rs.getLong("ID"));
 		object.setArticle(article);
-		object.setCategoty(category);
+		object.setCategory(category);
 		return object;
 	}
 }

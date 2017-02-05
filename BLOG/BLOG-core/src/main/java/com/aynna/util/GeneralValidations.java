@@ -1,5 +1,6 @@
 package com.aynna.util;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,11 +29,24 @@ public class GeneralValidations {
 		}
 	}
 	
-	public void isAlreadyRegistered(String email) throws ValidatorException{
+	public void isValidField(List<String> strList) throws ValidatorException {
+		
+		if (strList == null) {
+			throw new ValidatorException("!!!!Empty Category field!!!!");
+		}
+		
+	}
+	
+	public void isAlreadyRegistered(String email, String message) throws ValidatorException{
 		
 		if (userdao.find(email)){
-			throw new ValidatorException("!!!!You're Already Registered to us!!!!");
+			throw new ValidatorException("!!!!" + message + "!!!!");
 		}
 	}
-
+	
+	public void isEmailIdPasswordMatch(String email, String Password) throws ValidatorException {
+		if(!userdao.isEmailIdPasswordMatch(email,Password))
+			throw new ValidatorException("!!!!EmailId and Password Do not Match!!!!");
+	}
+	
 }

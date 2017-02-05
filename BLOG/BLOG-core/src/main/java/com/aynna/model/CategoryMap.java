@@ -6,5 +6,5 @@ import lombok.Data;
 public class CategoryMap {
 	long id;
 	Article article;
-	Category categoty;
+	Category category;
 }

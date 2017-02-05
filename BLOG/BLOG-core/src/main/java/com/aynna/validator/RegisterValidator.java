@@ -10,7 +10,7 @@ public class RegisterValidator {
 		GeneralValidations genvalid = new GeneralValidations();
 		genvalid.isValidField(user.getName(),"Name");
 		genvalid.isValidField(user.getEmailId());
-		genvalid.isAlreadyRegistered(user.getEmailId());
+		genvalid.isAlreadyRegistered(user.getEmailId(),"You're Already Registered to us");
 		genvalid.isValidField(user.getPassword(),"Password");
 	}
 	
