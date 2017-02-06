@@ -10,6 +10,17 @@
 	
 </head>
 <body>
+<h1>!!!Hey Mama!!!</h1>
+	<!-- 		${ARTICLE_LIST}
+			${EXCEPTION_LIST}
+ -->
+			<br><br><br>
+			<c:forEach var="u" items="${ARTICLE_LIST}">
+					<h4>${u.title}</h4><br>
+					<p>${u.content}</p><br>
+					<h10>${u.user.name}</h10>
+					<h10>${u.updatedTimestamp}</h10><br><br>
+			</c:forEach>
 
 </body>
 </html>

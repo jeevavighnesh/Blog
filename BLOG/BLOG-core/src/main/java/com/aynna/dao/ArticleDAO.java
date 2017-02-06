@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.aynna.exception.PersistenceException;
 import com.aynna.model.Article;
 import com.aynna.model.User;
 import com.aynna.util.ConnectionUtil;
@@ -58,11 +59,16 @@ public class ArticleDAO {
 		
 	}
 	
-	public List<Article> list() {//Select All
+	public List<Article> list() throws PersistenceException {//Select All
 		
-		String sql = "SELECT ID, USER_ID, TITLE, CONTENT, CREATION_DATE, UPDATED_DATE, ACTIVE  FROM ARTICLES";
+		String sql = "SELECT TITLE, CONTENT, UPDATED_DATE AS 'LAST UPDATED', USERS.NAME AS AUTHOR FROM ARTICLES JOIN USERS WHERE USERS.ID = ARTICLES.USER_ID";
 		return jdbcTemplate.query(sql, (rs, rowNum) -> {
+			try {
 			return convert(rs);
+			}
+			catch(SQLException e) {
+				throw new PersistenceException("No articles available", e);
+			}
 		});
 		
 	}
@@ -70,13 +76,10 @@ public class ArticleDAO {
 	static Article convert(ResultSet rs) throws SQLException {
 		Article object = new Article();
 		User user = new User();
-		user.setId(rs.getLong("USER_ID"));
-		object.setId(rs.getLong("ID"));
+		user.setName(rs.getString("AUTHOR"));
 		object.setTitle(rs.getString("TITLE"));
 		object.setContent(rs.getString("CONTENT"));
-		object.setCreationTimestamp(rs.getTimestamp("CREATION_DATE").toLocalDateTime());
-		object.setUpdatedTimestamp(rs.getTimestamp("UPDATED_DATE").toLocalDateTime());
-		object.setActive(rs.getBoolean("ACTIVE"));
+		object.setUpdatedTimestamp(rs.getTimestamp("LAST UPDATED").toLocalDateTime());
 		object.setUser(user);
 		return object;
 	}

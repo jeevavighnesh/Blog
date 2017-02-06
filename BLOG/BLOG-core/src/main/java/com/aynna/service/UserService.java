@@ -9,6 +9,7 @@ import com.aynna.dao.CategoryDAO;
 import com.aynna.dao.CategoryMapDAO;
 import com.aynna.dao.JoinsDAO;
 import com.aynna.dao.UserDAO;
+import com.aynna.exception.PersistenceException;
 import com.aynna.exception.ServiceException;
 import com.aynna.exception.ValidatorException;
 import com.aynna.model.Article;
@@ -54,6 +55,20 @@ public class UserService {
 			throw new ServiceException("!!!!Could Not Log You in!!!!",e);
 			
 		}
+		
+	}
+	
+	public List<Article> articleListService() throws ServiceException{
+		
+		ArticleDAO articleDAO = new ArticleDAO();
+		try {
+			return articleDAO.list();
+		} catch (PersistenceException e) {
+
+			throw new ServiceException("Nothing returned from DAO", e);
+			
+		}
+		
 		
 	}
 	

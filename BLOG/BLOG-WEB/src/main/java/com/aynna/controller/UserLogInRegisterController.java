@@ -33,7 +33,7 @@ public class UserLogInRegisterController {
 			userService.login(user);
 			LOGGER.setLevel(Level.INFO);
 			LOGGER.info("Log In Succuss :-)");
-			return "redirect:/userpage.jsp";
+			return "redirect:/user";
 
 		} catch (ServiceException e) {
 
