@@ -11,6 +11,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.aynna.exception.PersistenceException;
 import com.aynna.model.Article;
+import com.aynna.model.Category;
+import com.aynna.model.CategoryMap;
 import com.aynna.model.User;
 import com.aynna.util.ConnectionUtil;
 
@@ -20,6 +22,7 @@ public class ArticleDAO {
 	
 	public void save(Article object) {
 		
+		System.out.println(object.getUser().getId());
 		object.setUpdatedTimestamp(LocalDateTime.now());
 		String sql = "INSERT INTO ARTICLES (USER_ID, TITLE, CONTENT, CREATION_DATE) VALUES (?,?,?,?)";
 		Object[] params = { object.getUser().getId(), object.getTitle(), object.getContent(), LocalDateTime.now()};
@@ -83,4 +86,43 @@ public class ArticleDAO {
 		object.setUser(user);
 		return object;
 	}
+	
+	public Integer lastIdFromArticles() throws PersistenceException{
+		
+		String sql = "SELECT MAX(ID) AS ID FROM ARTICLES";
+		Integer id = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
+			
+			return rs.getInt("ID");
+					
+		});
+		if(id == null) {
+			throw new PersistenceException("There Is no DATA INserted into the articles");
+		}
+		else return id;
+		
+	}
+	
+	public List<CategoryMap> articleCategoryJoinForArticleId(long articleId) {
+
+		String sql = "SELECT ARTICLES.ID AS ARTICLE_ID, CATEGORY.ID AS CATEGORY_ID FROM CATEGORY JOIN ARTICLES WHERE ARTICLES.USER_ID = CATEGORY.USER_ID AND ARTICLES.ID = ?";
+		Object[] params = { articleId };
+		return jdbcTemplate.query(sql, params, (rs, rowNum) -> {
+			return convertjoin(rs);
+		});
+
+	}
+	
+	static CategoryMap convertjoin(ResultSet rs) throws SQLException {
+
+		CategoryMap categoryMap = new CategoryMap();
+		Article article = new Article();
+		Category category = new Category();
+		article.setId(rs.getLong("ARTICLE_ID"));
+		category.setId(rs.getLong("CATEGORY_ID"));
+		categoryMap.setArticle(article);
+		categoryMap.setCategory(category);
+		return categoryMap;
+
+	}
+
 }

@@ -11,6 +11,6 @@ public class HomeController {
 	@GetMapping
 	public String home(){
 		System.out.println("Home Page");
-		return "index.jsp";
+		return "/home";
 	}
 }

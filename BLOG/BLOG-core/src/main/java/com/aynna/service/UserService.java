@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 import com.aynna.dao.ArticleDAO;
 import com.aynna.dao.CategoryDAO;
 import com.aynna.dao.CategoryMapDAO;
-import com.aynna.dao.JoinsDAO;
 import com.aynna.dao.UserDAO;
 import com.aynna.exception.PersistenceException;
 import com.aynna.exception.ServiceException;
@@ -41,6 +40,13 @@ public class UserService {
 
 	}
 	
+	public long resolveUserService(User user) {
+		
+		UserDAO userDAO = new UserDAO();
+		return userDAO.resolveEmailId(user.getEmailId());
+		
+	}
+	
 	public void login(User user) throws ServiceException {
 		
 		LoginValidator loginValidator = new LoginValidator();
@@ -72,21 +78,15 @@ public class UserService {
 		
 	}
 	
-	public void postService (User user, Article article, List<String> categoryList) throws ServiceException{
+	public void postArticleService (User user, Article article, List<String> categoryList) throws ServiceException{
 		
 		ArticleDAO articleDao = new ArticleDAO();
 		
-		article.setUser(user);
-		
-		UserDAO userDao = new UserDAO();
 		CategoryDAO categoryDao = new CategoryDAO();
 		
-		user.setId(userDao.resolveEmailId(user.getEmailId()));
 		article.setUser(user);
 		
 		Category category = new Category();
-		
-		JoinsDAO joinsDao = new JoinsDAO();
 		
 		CategoryMapDAO categoryMapDAO = new CategoryMapDAO();
 		
@@ -94,20 +94,35 @@ public class UserService {
 		try {
 			
 			postvalid.validPost(user,article,categoryList);
+			System.out.println("after post valid");
 			category.setTagList(categoryList);
 			category.setUser(user);
 			articleDao.save(article);			
 			categoryDao.save(category);
-			List<CategoryMap> articleCategoryJoin = joinsDao.articleCategoryJoinForArticleId(article.getId());
+			List<CategoryMap> articleCategoryJoin = articleDao.articleCategoryJoinForArticleId(articleDao.lastIdFromArticles());
 			for (CategoryMap categoryMap : articleCategoryJoin) {
 				categoryMapDAO.save(categoryMap);
 			}
 			
-		} catch (ValidatorException e) {
+		} catch (ValidatorException | PersistenceException e) {
 				
 			throw new ServiceException("Could not Post the Provided Content", e);
 			
 		}
 		
 	}
+	
+	public Integer getLastArticleId() throws ServiceException {
+		ArticleDAO articleDAO = new ArticleDAO();
+		try {
+			return articleDAO.lastIdFromArticles();
+		} catch (PersistenceException e) {
+
+			throw new ServiceException("Nothing returned from DAO",e);
+			
+		}
+	}
+	
+	
+	
 }

@@ -58,16 +58,6 @@ public class CategoryDAO {
 		});
 
 	}
-	
-	// public Category listByUserId(long userId){
-	// String sql = "SELECT USER_ID, NAME FROM CATEGORY WHERE USER_ID = ?";
-	// Object[] params = {userId};
-	// Category category = new Category();
-	// return jdbcTemplate.queryForObject(sql, params, (rs, rowNum) -> {
-	// category.setId(rs.getLong("USER_ID"));
-	// category.setTagList(rs.getString("NAME"));;
-	// });
-	// }
 
 	static Category convert(ResultSet rs) throws SQLException {
 		Category object = new Category();
