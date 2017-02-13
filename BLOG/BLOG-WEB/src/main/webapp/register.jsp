@@ -14,5 +14,8 @@
 	<button type="submit" value="Submit">Submit</button><br><br> 
 
 </form>
+
+<div><span style="color:red">${EXCEPTION_LIST}</span></div>
+
 </body>
 </html>
